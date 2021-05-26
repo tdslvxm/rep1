@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdd.online_ddketang.mapper.VideoMapper">
+
+    <select id="listVideos"  resultType="Video">
+        select * from video
+    </select>
+
+
+    <!--多表查询的两种方法
+        1.写联合语句
+        2.利用collection标签进行分步查询
+    -->
+    <resultMap id="videoResultMap" type="video">
+    <!--column对应的是数据库中的列名(或者别名)  property对应的是类里面的属性名-->
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="summary" jdbcType="VARCHAR" property="summary"/>
+    <result column="cover_img" jdbcType="VARCHAR" property="coverImg"/>
+    <result column="price" jdbcType="INTEGER" property="price"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="point" jdbcType="DOUBLE" property="point"/>
+
+    <!-- 切记 collection property里的值是video字段名称-->
+    <collection property="chapters" ofType="Chapter" select="com.tdd.online_ddketang.mapper.ChapterMapper.getChapterByVideoId" column="id">
+        <id column="chapter_id" property="id" jdbcType="INTEGER"/>
+        <result column="chapter_title" property="title" jdbcType="VARCHAR"/>
+        <result column="chapter_ordered" property="ordered" jdbcType="VARCHAR"/>
+        <result column="chapter_create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="chapter_video_id" property="videoId" jdbcType="INTEGER"/>
+    </collection>
+</resultMap>
+    <select id="getVideoById"  resultMap="videoResultMap">
+        select  v.id,v.title,v.summary,v.cover_img,v.price,v.create_time,v.point from video v
+        where v.id=#{id};
+    </select>
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdd.online_ddketang.mapper.VideoOrderMapper">
+
+    <!--/**-->
+    <!--*   订单对象-->
+    <!--* `id` int(11) unsigned NOT NULL AUTO_INCREMENT,-->
+    <!--*   `out_trade_no` varchar(64) DEFAULT NULL COMMENT '订单唯一标识',-->
+    <!--*   `state` int(11) DEFAULT NULL COMMENT '0表示未支付，1表示已支付',-->
+    <!--*   `create_time` datetime DEFAULT NULL COMMENT '订单生成时间',-->
+    <!--*   `total_fee` int(11) DEFAULT NULL COMMENT '支付金额，单位分',-->
+    <!--*   `video_id` int(11) DEFAULT NULL COMMENT '视频主键',-->
+    <!--*   `video_title` varchar(256) DEFAULT NULL COMMENT '视频标题',-->
+    <!--*   `video_img` varchar(256) DEFAULT NULL COMMENT '视频图片',-->
+    <!--*   `user_id` int(12) DEFAULT NULL COMMENT '用户id',-->
+    <!--*/-->
+
+    <resultMap id="VideoOrderResultMap" type="VideoOrder">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="total_fee" property="totalFee" jdbcType="INTEGER" />
+        <result column="video_id" property="videoId" jdbcType="INTEGER" />
+        <result column="video_title" property="videoTitle" jdbcType="VARCHAR" />
+        <result column="video_img" property="videoImg" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="findVideoOrderByVideoIdAndUserId"  resultMap="VideoOrderResultMap">
+        select *
+        from video_order
+        where  video_id=#{video_id} and user_id=#{user_id}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO video_order ( out_trade_no, state, create_time, total_fee, video_id, video_title, video_img, user_id) VALUES
+        ( #{outTradeNo} , #{state}, #{createTime}, #{totalFee}, #{videoId}, #{videoTitle}, #{videoImg}, #{userId})
+    </insert>
+</mapper>

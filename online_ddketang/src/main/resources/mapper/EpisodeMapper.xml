@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdd.online_ddketang.mapper.EpisodeMapper">
+
+    <!--<resultMap id="EpisodeResultMap" type="Episode">-->
+        <!--<id column="episode_id" property="id" jdbcType="INTEGER"/>-->
+        <!--<result column="episode_title" property="title" jdbcType="VARCHAR" />-->
+        <!--<result column="episode_num" property="num" jdbcType="INTEGER" />-->
+        <!--<result column="episode_ordered" property="ordered" jdbcType="INTEGER" />-->
+        <!--<result column="episode_play_url" property="playUrl" jdbcType="VARCHAR" />-->
+        <!--<result column="episode_chapter_id" property="chapterId" jdbcType="INTEGER" />-->
+        <!--<result column="episode_free" property="free" jdbcType="TINYINT" />-->
+        <!--<result column="episode_video_id" property="videoId" jdbcType="INTEGER" />-->
+        <!--<result column="episode_create_time" property="createTime" jdbcType="TIMESTAMP" />-->
+    <!--</resultMap>-->
+    <resultMap id="EpisodeResultMap" type="Episode">
+        <id column="episode_id" property="id" jdbcType="INTEGER"/>
+        <result column="episode_title" property="title" jdbcType="VARCHAR" />
+        <result column="episode_num" property="num" jdbcType="INTEGER" />
+        <result column="episode_ordered" property="ordered" jdbcType="INTEGER" />
+        <result column="episode_play_url" property="playUrl" jdbcType="VARCHAR" />
+        <result column="episode_chapter_id" property="chapterId" jdbcType="INTEGER" />
+        <result column="episode_free" property="free" jdbcType="TINYINT" />
+        <result column="episode_video_id" property="videoId" jdbcType="INTEGER" />
+        <result column="episode_create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <select id="getEpisodeByChapterId"  resultMap="EpisodeResultMap">
+        select e.id as episode_id, e.title as episode_title ,e.num as episode_num,e.ordered as  episode_ordered ,
+        e.play_url as episode_play_url,e.free as episode_free,e.create_time as episode_create_time,e.video_id as episode_video_id,e.chapter_id as episode_chapter_id
+        from episode e
+        where e.chapter_id=#{id};
+    </select>
+
+    <select id="findFirstEpisodeByVideoId" resultMap="EpisodeResultMap">
+         select e.id as episode_id, e.title as episode_title ,e.num as episode_num,e.ordered as  episode_ordered ,
+        e.play_url as episode_play_url,e.free as episode_free,e.create_time as episode_create_time,e.video_id as episode_video_id,e.chapter_id as episode_chapter_id
+        from episode e
+         where e.video_id=#{video_id} limit 1
+    </select>
+
+</mapper>
